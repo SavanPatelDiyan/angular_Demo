@@ -1,0 +1,142 @@
+<style>
+    .error-msg {
+        color: red;
+    }
+</style>
+<div class="container py-4">
+    <div class="card p-5">
+        <div class="text-end d-flex justify-content-between mb-2">
+            <span>
+                <input type="text" (input)="search()" [(ngModel)]="searchTerm" class="form-control"
+                    placeholder="Search...">
+            </span>
+            <!-- <span>
+                <button class="btn btn-primary">
+                    + Add
+                </button>
+            </span> -->
+        </div>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No.</th>
+                        <th scope="col" (click)="sortData($event)" id="name">Name
+                            <i id="name"
+                                *ngIf="!!this.shortKey && this.shortKey === 'name' && !!this.shortDirection && this.shortDirection ==='asc'"
+                                class="fa-solid fa-arrow-up"></i>
+                            <i id="name"
+                                *ngIf="!!this.shortKey && this.shortKey === 'name' && !!this.shortDirection && this.shortDirection ==='desc'"
+                                class="fa-sharp fa-solid fa-arrow-down"></i>
+                        </th>
+                        <th scope="col" (click)="sortData($event)" id="phone">Phone
+                            <i id="phone"
+                                *ngIf="!!this.shortKey && this.shortKey === 'phone' && !!this.shortDirection && this.shortDirection ==='asc'"
+                                class="fa-solid fa-arrow-up"></i>
+                            <i id="phone"
+                                *ngIf="!!this.shortKey && this.shortKey === 'phone' && !!this.shortDirection && this.shortDirection ==='desc'"
+                                class="fa-sharp fa-solid fa-arrow-down"></i>
+                        </th>
+                        <th scope="col" (click)="sortData($event)" id="email">Email
+                            <i id="email"
+                                *ngIf="!!this.shortKey && this.shortKey === 'email' && !!this.shortDirection && this.shortDirection ==='asc'"
+                                class="fa-solid fa-arrow-up"></i>
+                            <i id="email"
+                                *ngIf="!!this.shortKey && this.shortKey === 'email' && !!this.shortDirection && this.shortDirection ==='desc'"
+                                class="fa-sharp fa-solid fa-arrow-down"></i>
+                        </th>
+                        <th scope="col">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let demoData of demoList;let demoIndex = index">
+                        <td>{{l * (p -1) + demoIndex + 1}}</td>
+                        <td>{{demoData.name}}</td>
+                        <td>{{demoData.phone}}</td>
+                        <td>{{demoData.email}}</td>
+                        <td>
+                            <button class="btn btn-secondary me-1" (click)="editData(demoIndex)">
+                                <i class="fas fa-pencil"></i>
+                            </button>
+                            <button class="btn btn-danger" (click)="deleteData(demoIndex)">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="demoList.length == 0" class="text-center">
+                        <td colspan="5">
+                            <h5>No Data Found</h5>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="text-end" *ngIf="demoList.length > 0">
+                <button type="button" [disabled]="this.p == 1" class="btn btn-light me-1"
+                    (click)="pageChange(this.p - 1)">
+                    <span>
+                        << </span>
+                </button>
+                <span class="me-1" *ngFor="let pageNumber of pageNumberList">
+                    <button type="button" class="btn btn-light" [ngClass]="pageNumber == p ? 'active':''"
+                        (click)="pageChange(pageNumber)">{{pageNumber}}</button>
+                </span>
+                <button type="button" [disabled]="this.p == this.pageNumberList.length" class="btn btn-light me-1"
+                    (click)="pageChange(this.p + 1)">
+                    <span>
+                        >> </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card p-5 mt-3">
+        <form action="" [formGroup]="demoForm">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label for="" class="required">Name</label>
+                    <input type="text" formControlName="name" class="form-control" placeholder="Enter Your Name...">
+                    <div *ngIf="fDemoData['name'].errors">
+                        <div *ngIf="submittedDemoData && fDemoData['name'].errors['required']">
+                            <span class="error-msg">
+                                Name is required.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label for="" class="required">Email</label>
+                    <input type="text" formControlName="email" class="form-control" placeholder="Enter Your Email...">
+                    <div *ngIf="submittedDemoData && fDemoData['email'].errors">
+                        <div *ngIf="fDemoData['email'].errors['required']">
+                            <span class="error-msg">
+                                Email is required.
+                            </span>
+                        </div>
+                        <div *ngIf="fDemoData['email'].hasError('pattern')">
+                            <span class="error-msg">
+                                Please Enter Valid Email.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label for="" class="required">Phone</label>
+                    <input type="text" maxlength="10" class="form-control" formControlName="phone"
+                        placeholder="Enter Your Phone...">
+                    <div *ngIf="submittedDemoData && fDemoData['phone'].errors">
+                        <div *ngIf="fDemoData['phone'].errors['required']">
+                            <span class="error-msg">
+                                Phone is required.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="text-end mt-3">
+            <button class="btn btn-primary" *ngIf="isEdit == false" (click)="saveData()">Save</button>
+            <button class="btn btn-primary" *ngIf="isEdit == true" (click)="updateData()">Update</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+<div class="container my-4">
+    <h2>About Us</h2>
+    <div>
+        <label for="">
+            Name
+        </label>
+        <input type="text" class="form-control" placeholder="Input Here..." #val>
+    </div>
+    <div class="btn btn-primary mt-2" (click)="submitValue(val)">
+        Submit Value
+    </div>
+
+    <div class="mt-4">
+        <app-demo *ngIf="compDemo" [myValue]="value">
+            ngContent : {{value}}
+        </app-demo>
+    </div>
+
+    <div class="mt-4">
+        <button class="btn btn-danger" (click)="destroy()">
+            Destroy Component
+        </button>
+    </div>
+
+</div>
